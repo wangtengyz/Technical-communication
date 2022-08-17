@@ -1,0 +1,60 @@
+<!--
+ * @Author: tengye
+ * @Date: 2022-02-12 15:10:38
+ * @LastEditors: tengye
+ * @LastEditTime: 2022-02-12 16:34:48
+ * @FilePath: /demo1-string.html
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js数据类型储存在哪里-字符串篇</title>
+</head>
+<body>
+  <script>
+  // node --v8-options | grep -B0 -A1 stack-size 查看栈内存大小
+  // 通过内存-》堆快照-》根据变量名查看饮用地址
+  // 备注：chrome无法查看实际地址，此处为抽象后的地址
+  // 例1
+  // const Demo1 = function () {
+  //   this.s1 = 'GYKJ' // 疑问 字符串存哪里
+  //   this.s2 = 'GYKJ' // 疑问  这个呢？
+  // }
+  // let a = new Demo1()
+  // let b = new Demo1()
+
+  // 例2
+  const Demo2 = function () {
+    this.s0 = 'GYKJ'
+    this.s1 = 'GYKJ' // @17389🗖
+  }
+
+  let a = new Demo2()
+  let b = new Demo2()
+  debugger
+  a.s0 = 'GYKJCS'
+  a.s2 = 'GYKJ string' 
+
+  // 字符串拼接呢 附加情况
+  a.s3 = a.s2+a.s0;   // 疑问点： 字符串拼接做了哪些操作？
+  a.s4 = a.s2+a.s0;
+
+  /*
+  *字符串拼接时如果以传统方式（如 SeqString）存储，拼接操作的时间复杂度为 O(n) ，
+  *采用 绳索结构[Rope Structure] （也就是 ConsString 所采用的数据结构）可以减少拼接所花费的时间。
+  * 所以让我们梳理一下，在我们创建字符串的时候，V8会先从内存中（哈希表）查找是否有已经创建的完全一致的字符串，
+  * 如果存在，直接复用。如果不存在，则开辟一块新的内存空间存进这个字符串，然后把地址赋到变量中。
+  * 这也是为什么我们不能直接用下标的方式修改字符串: V8中的字符串都是不可变的。
+  * 
+  * 
+  * 任何语言的string都不可能存在栈上，存在栈上的只是一个指针而已。
+  * string内部是个变长的字符数组，不可能给你存在栈上，只有固定大小的对象和值才能在栈上分配空间
+  */
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-06-09 17:50:31
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-06-09 17:50:36
+-->
+<title>Vue App</title>
+
+<body>
+  <h1>Vue App</h1>
+  <hr />
+  <div id="root"></div>
+  <script src="https://unpkg.com/vue@3" crossorigin></script>
+  <script>
+    const Father = Vue.createApp({
+      data () {
+        return {
+          fatherState: "Father-original state"
+        };
+      },
+      methods: {
+        changeState: function () {
+          console.log("-----change Father state-----");
+          this.fatherState = "Father-new state";
+        }
+      },
+      render () {
+        console.log("Father:render");
+        return Vue.h("div", {}, [
+          Vue.h("h2", this.fatherState),
+          Vue.h("button", { onClick: this.changeState }, "change Father state"),
+          Vue.h("hr"),
+          Vue.h(Vue.resolveComponent("child"))
+        ]);
+      }
+    });
+    Father.component("child", {
+      data () {
+        return {
+          childState: "Child-original state"
+        };
+      },
+      methods: {
+        changeState: function () {
+          console.log("-----change Child state-----");
+          this.childState = "Child-new state";
+        }
+      },
+      render () {
+        console.log("child:render");
+        return Vue.h("div", {}, [
+          Vue.h("h3", this.childState),
+          Vue.h("button", { onClick: this.changeState }, "change Child state")
+        ]);
+      }
+    });
+    Father.mount("#root");
+  </script>
+</body>

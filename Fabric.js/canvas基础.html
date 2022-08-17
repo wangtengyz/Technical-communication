@@ -1,0 +1,212 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-08-11 13:35:49
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-08-15 17:18:55
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 1、创建 canvas 元素 -->
+  <canvas id="c" width="300" height="300" style="border: 1px solid #ccc;"></canvas>
+
+  <!-- 基础 -->
+  <script>
+    // 2、获取 canvas 对象
+    // const cnv = document.getElementById('c')
+
+    // 3、获取 canvas 上下文环境对象
+    // const cxt = cnv.getContext('2d')
+
+    // // 4、绘制图形
+    // // 第一条线
+    // cxt.moveTo(20, 100)
+    // cxt.lineTo(200, 100)
+    // cxt.stroke()
+
+    // // 第二条线
+    // cxt.beginPath() // 重新开启一个路径
+    // cxt.moveTo(20, 120.5)
+    // cxt.lineTo(200, 120.5)
+    // cxt.lineWidth = 4
+    // cxt.strokeStyle = 'red'
+    // cxt.stroke()
+    // cxt.fillStyle = 'pink'
+    // cxt.fillRect(50, 50, 200, 100) // fillRect(x, y, width, height)
+
+    // 绘制三角形
+    // cxt.moveTo(50, 50)
+    // cxt.lineTo(200, 50)
+    // cxt.lineTo(200, 200)
+    // 注意点：如果使用 lineTo 闭合图形，是不能很好闭合拐角位的。
+    // cxt.lineTo(50, 50) // 闭合
+    // 手动闭合
+    // cxt.closePath()
+    // cxt.lineJoin = 'miter' // 线条连接的样式。miter: 默认; bevel: 斜面; round: 圆角
+    // cxt.lineWidth = 20
+    // cxt.stroke()
+
+    // 绘制弧线
+    // cxt.beginPath()
+    // cxt.arc(150, 150, 100, 0, 90 * Math.PI / 180)
+    // cxt.stroke()
+    // cxt.beginPath()
+    // cxt.moveTo(40, 40)
+    // cxt.strokeStyle = 'red'
+    // cxt.arcTo(120, 40, 120, 120, 80)
+    // cxt.stroke()
+
+  </script>
+
+  <!-- 文本 -->
+  <script>
+    // 2、获取 canvas 对象
+    const cnv = document.getElementById('c')
+    // 3、获取 canvas 上下文环境对象
+    const cxt = cnv.getContext('2d')
+
+    const text = '光云科技';
+    cxt.strokeStyle = 'pink' // 设置文本描边颜色
+    cxt.font = '60px Arial' // 将字号设置成 60px，方便观察
+    cxt.strokeText(text, 30, 90)
+    console.log(cxt.measureText(text).width) // 获取文本的长度，单位是 px ,240px
+    cxt.beginPath() // 重新开启一个路径
+    cxt.font = '60px Arial'
+    cxt.fillStyle = 'red'
+    cxt.fillText(text, 28, 88)
+  </script>
+
+  <!-- 1、创建 canvas 元素 -->
+  <canvas id="c1" width="300" height="300" style="border: 1px solid #ccc;"></canvas>
+  <canvas id="c2" width="300" height="300" style="border: 1px solid #ccc;"></canvas>
+  <!-- 绘制图片 + 滤镜基础 -->
+  <script>
+    // 2、获取 canvas 对象
+    const cnv1 = document.getElementById('c1');
+    const cnv2 = document.getElementById('c2');
+    // 3、获取 canvas 上下文环境对象
+    const cxt1 = cnv1.getContext('2d');
+    const cxt2 = cnv2.getContext('2d');
+    // 1 创建 Image 对象
+    const image = new Image();
+
+    // 2 引入图片
+    image.src = '../img/woman.jpeg'
+    // image.src = '../img/bm9.jpg'
+    image.onload = () => {
+      cxt1.drawImage(image, 0, 0, 200, 240)
+      // 获取图片信息
+      const imgData = cxt1.getImageData(0, 0, image.width, image.height)
+      console.log('imgData===', imgData.data)
+      // 打印图片信息
+      const data = imgData.data;
+      const width = imgData.width
+      const height = imgData.height
+
+      // 滤镜处理
+      reverse(data, width,)
+      console.log('newData===', data)
+      // 根据图片信息绘制到画布上
+      cxt2.putImageData(imgData, 0, 0)
+    }
+
+    /**
+     * @name: 滤镜方法
+     * @param {*} data 图像数据
+     * @return {*}
+     */
+    function reverse (data) {
+      const [first, ...second] = data
+      const isArray = Array.isArray(first);
+      if (isArray) {
+        const length = data.length;
+        for (let index = 0; index < length; index++) {
+          reverse(data[index])
+        }
+        return
+      }
+
+      // 如果不是数组，说明到了最低层，可以进行像素级别处理
+      const length = data.length
+      //
+      for (var i = 0; i < data.length; i += 4) {
+        // 滤镜-反向处理
+        // data[i + 0] = 255 - data[i + 0] // r，红通道
+        // data[i + 1] = 255 - data[i + 1] // g，绿通道
+        // data[i + 2] = 255 - data[i + 2] // b，蓝通道
+
+        // 滤镜-灰度处理ss
+        // const grayscale = data[i] * 0.3 + data[i + 1] * 0.6 + data[i + 2] * 0.1
+        // data[i + 0] = grayscale // r，红通道
+        // data[i + 1] = grayscale // g，绿通道
+        // data[i + 2] = grayscale // b，蓝通道
+
+        // 滤镜-黑白处理
+        // const r = data[i + 0]
+        // const g = data[i + 1]
+        // const b = data[i + 2]
+        // const avg = (r + g + b) / 3
+        // data[i + 0] = data[i + 1] = data[i + 2] = avg >= 128 ? 255 : 0
+
+        // 滤镜-变亮 要调亮，就把 rgb 每个值往上调；如果要调暗，就往下调。
+        let luminance = 60 // 调节参数
+
+        // for (var i = 0; i < data.length; i += 4) {
+        //   data[i + 0] += luminance // r，红通道
+        //   data[i + 1] += luminance // g，绿通道
+        //   data[i + 2] += luminance // b，蓝通道
+        // }
+
+        // 滤镜-变暗
+        // for (var i = 0; i < data.length; i += 4) {
+        //   data[i + 0] -= luminance // r，红通道
+        //   data[i + 1] -= luminance // g，绿通道
+        //   data[i + 2] -= luminance // b，蓝通道
+        // }
+
+        // 滤镜-调节RGB 单独修改一个通道
+        // for (var i = 0; i < data.length; i += 4) {
+        //   data[i + 0] -= luminance // r，红通道
+        //   // data[i + 1] -= luminance // g，绿通道
+        //   // data[i + 2] -= luminance // b，蓝通道
+        // }
+
+        // 滤镜-调节透明度 单独修改a 通道的值
+        // for (var i = 0; i < data.length; i += 4) {
+        //   data[i + 3] -= 100 // a，透明通道
+        // }
+
+        // 滤镜-老照片 老照片效果是有点偏黄的黑白灰照片，红 + 绿 = 黄。
+        // for (var i = 0; i < data.length; i += 4) {
+        //   const r = data[i + 0]
+        //   const g = data[i + 1]
+        //   const b = data[i + 2]
+
+        //   data[i + 0] = r * 0.28 + g * 0.72 + b * 0.22
+        //   data[i + 1] = r * 0.25 + g * 0.63 + b * 0.13
+        //   data[i + 2] = r * 0.17 + g * 0.66 + b * 0.13
+        // }
+
+        // 滤镜-模糊 图片模糊的方法是，当前像素的值，取决于周围8个像素的平均值
+        //（某些情况没有8个那么多，比如像素在图像的边缘）。将平均值赋给当前正在操作的像素，就可以得到一个和周边像素比较接近的过渡颜色。
+
+
+      }
+
+    }
+
+
+  </script>
+
+</body>
+
+</html>

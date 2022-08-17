@@ -1,0 +1,156 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-08-16 09:18:31
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-08-16 11:09:52
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<h2>简化打印中心callback回调地狱场景</h2>
+<h3>
+  <pre>
+    function print1 (val1, callback) {
+      console.log(`print1执行,得到入参数val1---${val1}`);
+      const val = val1 + '一些业务代码 得到print2的入参数'
+      setTimeout(() => {
+        callback({ val1: val })
+      }, 1000)
+    }
+
+    function print2 (val, val2, callback) {
+      console.log(`执行print2,得到print1返回值${JSON.stringify(val)}， 得到入参数val2---${val2}`);
+      const val22 = val2 + '一些业务代码 得到print3的入参数'
+      setTimeout(() => {
+        callback({ ...val, val2: val22 })
+      }, 1000)
+    }
+
+    function print3 (val, val3, callback) {
+      console.log(`执行print3,得到print2返回值${JSON.stringify(val)}， 得到入参数val3---${val3}`);
+      const val33 = val3 + '一些业务代码 得到print4的入参数'
+      setTimeout(() => {
+        callback({ ...val, val3: val33 })
+      }, 1000)
+    }
+
+    function print4 (val, val4, callback) {
+      console.log(`执行print4,得到print3返回值${JSON.stringify(val)}， 得到入参数val4---${val4}`);
+      const val44 = val4 + '一些业务代码 得到所有的结果'
+      setTimeout(() => {
+        callback({ ...val, val4: val44 })
+      }, 1000)
+    }
+
+    function printStart (callback) {
+      print1('print1', (val1) => {
+        print2(val1, 'print2', (val2) => {
+          print3(val2, 'print3', (val3) => {
+            print4(val3, 'print4', (val4) => {
+              callback(val4)
+            })
+          })
+        })
+      })
+    }
+    const getMessage = val => {
+      console.log('获取到最终result===', val)
+    }
+    printStart(getMessage)
+</pre>
+</h3>
+
+<body>
+  <script>
+    function print1 (val1, callback) {
+      console.log(`print1执行,得到入参数val1---${val1}`);
+      // 一些业务代码 得到print2的入参数
+      const val = val1 + '一些业务代码 得到print2的入参数'
+      setTimeout(() => {
+        callback({ val1: val })
+      }, 1000)
+    }
+
+    function print2 (val, val2, callback) {
+      console.log(`执行print2,得到print1返回值${JSON.stringify(val)}， 得到入参数val2---${val2}`);
+      // 一些业务代码 得到print3的入参数
+      const val22 = val2 + '一些业务代码 得到print3的入参数'
+      setTimeout(() => {
+        callback({ ...val, val2: val22 })
+      }, 1000)
+    }
+
+    function print3 (val, val3, callback) {
+      console.log(`执行print3,得到print2返回值${JSON.stringify(val)}， 得到入参数val3---${val3}`);
+      // 一些业务代码 得到print4的入参数
+      const val33 = val3 + '一些业务代码 得到print4的入参数'
+      setTimeout(() => {
+        callback({ ...val, val3: val33 })
+      }, 1000)
+    }
+
+    function print4 (val, val4, callback) {
+      console.log(`执行print4,得到print3返回值${JSON.stringify(val)}， 得到入参数val4---${val4}`);
+      // 一些业务代码 得到所有的结果 返回最终结果
+      const val44 = val4 + '一些业务代码 得到所有的结果'
+      setTimeout(() => {
+        callback({ ...val, val4: val44 })
+      }, 1000)
+    }
+
+    function printStart (callback) {
+      print1('print1', (val1) => {
+        print2(val1, 'print2', (val2) => {
+          print3(val2, 'print3', (val3) => {
+            print4(val3, 'print4', (val4) => {
+              callback(val4)
+            })
+          })
+        })
+      })
+    }
+    const getMessage = val => {
+      console.log('获取到最终result===', val)
+    }
+    printStart(getMessage)
+
+
+  </script>
+
+  <script>
+    // 利用高阶函数（闭包）来缓存函数和入参
+    // const promisify = fn => (...args) => new Promise((resolve, reject) => {
+    //   args.push(resolve, reject);
+    //   Reflect.apply(fn, this, args);
+    // });
+
+    // const print1Promise = promisify(print1);
+    // const print2Promise = promisify(print2);
+    // const print3Promise = promisify(print3);
+    // const print4Promise = promisify(print4);
+
+    // async function printStartPromise () {
+    //   const val1 = await print1Promise('print1');
+    //   const val2 = await print2Promise(val1, 'print2');
+    //   const val3 = await print3Promise(val2, 'print3');
+    //   const val4 = await print4Promise(val3, 'print4');
+    //   return val4
+    // }
+
+    // printStartPromise().then(res => {
+    //   console.log('printStartPromise===', res)
+    // })
+
+  </script>
+
+
+</body>
+
+</html>

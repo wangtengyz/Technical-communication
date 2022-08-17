@@ -1,0 +1,52 @@
+<!--
+ * @Author: tengye
+ * @Date: 2022-02-12 15:33:08
+ * @LastEditors: tengye
+ * @LastEditTime: 2022-02-12 16:51:28
+ * @FilePath: /demo2-number.html
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>js数据类型储存在哪里-数字篇</title>
+    </head>
+    <body>
+      <script>
+        // 例1
+        const Demo = function () {
+          this.smi1 = 1
+          this.smi2 = 2
+          this.heapNumber1 = 1.1
+          this.heapNumber2 = 2.1
+        }
+      let obj1 = new Demo()
+      let obj2 = new Demo()
+      debugger
+      // obj1.heapNumber1 ++
+      // obj1.smi1 ++ 
+
+      // const num1 = 3;
+      // num1 ++;
+
+      /**
+       * 数字在V8中分为 smi 和 heapNumber。
+       * smi直接存进内存范围为 ： -2³¹ 到 2³¹-1（2³¹≈2*10⁹）的整数;
+       * heapNumber类似字符串 不可变范围为 ：所有非smi的数字
+       * 
+       * 一直使用 64 位去存储任何数字实际是非常低效的（空间低效，计算时间低效 smi大量使用位运算），
+       * 所以 JavaScript 引擎并不总会使用 64 位去存储数字，引擎在内部可以采用其他内存表示方式（如 32 位），
+       * 只要保证数字外部所有能被监测到的特性对齐 64 位的表现就行；
+       * 
+       * 在整数中，地址是动态的，可能是内部采用其他内存方式表示。
+       */
+
+
+    </script>
+    </body>
+</html>
+
+

@@ -1,0 +1,66 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-08-13 09:34:08
+ * @LastEditTime: 2021-08-13 09:52:09
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /studentA/demo/index copy.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>组合异步函数</title>
+    </head>
+    <body>
+        <script>
+            function fn1(arg) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        arg += '_Promise_fn1';
+                        console.log('fn1');
+                        resolve(arg);
+                    }, 1000);
+                });
+            }
+            function fn2(arg) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        arg += '_Promise_fn2';
+                        console.log('fn2');
+                        resolve(arg);
+                    }, 1000);
+                });
+            }
+            function fn3(arg) {
+                arg += '_fn3';
+                console.log('fn3');
+                return arg;
+            }
+            const result = compose(fn2, fn1, fn3, fn2);
+            result(10).then((res) => {
+                console.log('异步返回', res);
+            });
+            /**
+             * @param  {...any} args
+             * @returns
+             */
+            function compose(...funcs) {
+                if (funcs.length === 0) {
+                    return (args) => args;
+                }
+                if (funcs.length === 1) {
+                    return funcs[0];
+                }
+                return funcs.reduce(
+                    (a, b) =>
+                        async (...args) =>
+                            b(await a(...args)),
+                );
+            }
+
+        </script>
+    </body>
+</html>

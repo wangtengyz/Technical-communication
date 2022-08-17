@@ -1,0 +1,129 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-10-28 21:02:40
+ * @LastEditTime: 2022-08-15 17:30:16
+ * @LastEditors: voanit
+ * @Description: In User Settings Edit
+ * @FilePath: /studentA/调度器/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>思考</title>
+</head>
+
+<body>
+  <script>
+    // 问题一
+    // 需求描述：有列表有10行数据，其中有一个数据库存，需要调10个请求获取，后端为了减少服务器压力需要前端限制最多同时并发5个？
+    // 问题二
+    /*
+    * 需要优化保证最高效率运转？
+    */
+    // 问题三
+    /*
+    *  服务压力太大了需要优化后面需要你改成4个、3个，后面甚至说希望有接口控制，压力大是改成3，压力小时改成6【为什么是6？】
+    */
+
+
+
+
+
+    // 请问你会如何设计
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 实现限制并发的Promise调度器
+    let startRequest = 0;
+
+    // 调度器对象
+    class Scheduler {
+      constructor(limit) {
+        this.queue = [] // 请求栈
+        this.limit = limit // 限制请求数
+        this.count = 0 // 当前请求数 
+        this.dataRes = []
+      }
+
+
+      add (time, order) {
+        const promiseCreator = () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              console.log(order, new Date().getTime() - startRequest)
+              resolve()
+            }, time)
+          })
+        }
+        this.queue.push(promiseCreator)
+      }
+
+      taskStart () {
+        for (let i = 0; i < this.limit; i++) {
+          this.request().then(res => {
+            this.dataRes.push(res)
+          })
+        }
+      }
+
+      request () {
+        if (!this.queue.length) return this.dataRes;
+        if (this.count >= this.limit) return
+        this.count++
+        // 关键代码
+        this.queue.shift()().then(() => {
+          this.count--
+          this.request().then(res => {
+            this.dataRes.push(res)
+          })
+        })
+      }
+    }
+
+    // 测试
+    const scheduler = new Scheduler(5);
+    const addTask = (time, order) => {
+      scheduler.add(time, order);
+    };
+    addTask(10000, "表格第一行-库存输出11");
+    addTask(5000, "表格第二行-库存输出22");
+    addTask(3000, "表格第三行-库存输出33");
+    addTask(4000, "表格第四行-库存输出14");
+    addTask(10000, "表格第五行-库存输出45");
+    addTask(5000, "表格第六行-库存输出36");
+    addTask(3000, "表格第七行-库存输出57");
+    addTask(4000, "表格第八行-库存输出38");
+    addTask(10000, "表格第九行-库存输出61");
+    addTask(5000, "表格第十行-库存输出52");
+
+    scheduler.taskStart();
+    startRequest = new Date().getTime() + 1
+    console.log('开始触发请求')
+  </script>
+</body>
+
+</html>

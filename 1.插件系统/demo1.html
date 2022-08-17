@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>基本demo</title>
+        <script>
+            // 计算器
+            const betaCalc = {
+                currentValue: 0,
+
+                setValue(newValue) {
+                    this.currentValue = newValue;
+                    console.log(this.currentValue);
+                },
+
+                plus(addend) {
+                    this.setValue(this.currentValue + addend);
+                },
+
+                minus(subtrahend) {
+                    this.setValue(this.currentValue - subtrahend);
+                },
+            };
+
+            // 数字
+            const getNum = () =>
+                document.getElementById('number').value * 1 || 0;
+            // 加法计算
+            function plusCalculate() {
+                betaCalc.plus(getNum());
+                document.getElementById('result').innerHTML =
+                    betaCalc.currentValue;
+            }
+            // 减法计算
+            function minusCalculate() {
+                betaCalc.minus(getNum());
+                document.getElementById('result').innerHTML =
+                    betaCalc.currentValue;
+            }
+            // 问题如何添加更多功能 比如求平方
+        </script>
+    </head>
+    <body>
+        <input type="text" id="number" placeholder="默认0" />
+        <button onclick="plusCalculate()">加</button>
+        <button onclick="minusCalculate()">减</button>
+        <div>结果为</div>
+        <div id="result">0</div>
+    </body>
+
+    <script>
+        // 假如求平方功能业务场景要求不一样咋办
+        
+        // 场景一 结果值求平方
+        // function squaredCalculate() {
+        //         betaCalc.squaredCurrent(getNum());
+        //         document.getElementById('result').innerHTML =
+        //             betaCalc.currentValue;
+        //     }
+        // 场景二 输入框的值求平方
+        // function squaredCalculate() {
+        //         betaCalc.squaredCurrent(getNum());
+        //         document.getElementById('result').innerHTML =
+        //             betaCalc.currentValue;
+        //     }
+        // squaredCurrent() {
+        //             this.setValue(this.currentValue  * this.currentValue);
+        //         }
+        //         squaredResult(newVal) {
+        //             this.setValue(newVal  * newVal);
+        //         }
+    </script>
+</html>

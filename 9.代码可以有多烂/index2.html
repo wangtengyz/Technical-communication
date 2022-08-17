@@ -1,0 +1,43 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-07-14 09:40:15
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-07-14 15:56:26
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前端要给力之：代码可以有多烂？</title>
+</head>
+
+<body>
+  <h2>如果把上面的问题改变一下：
+
+    　　 - 如果不是a、b、c三个条件，而是两个以上条件呢？
+
+    　　 - 如果强调a、b、c本身不一定是布尔值呢？</h2>
+  <h2>[问题的泛化与求解：ES6新特性]</h2>
+</body>
+<script>
+  let a = 1,
+    b = 1,
+    c = 1,
+    d = 1,
+    e = 1;
+
+  // v2，扫描所有参数，发现不同的即返回true，全部相同则返回false。  
+  function e_xor(a) {
+    return ([].slice.call(arguments, 1)).some(function (b) {
+      if (b != a) return true
+    });
+  }
+  e_xor(a, b, c, d, e);
+  console.log('v2 e_xor(a, b, c, d, e);===', !e_xor(a, b, c, d, e))
+</script>
+
+</html>

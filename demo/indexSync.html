@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>组合同步函数2</title>
+    </head>
+    <body>
+        <script>
+            function compose(...funcs) {
+                if (funcs.length === 0) {
+                    return (args) => args;
+                }
+                if (funcs.length === 1) {
+                    return funcs[0];
+                }
+                return funcs.reduce(
+                    (a, b) =>
+                        (...args) =>
+                            b(a(...args)),
+                );
+            }
+             // 处理数据 utils
+            // 千分符号
+            function thousandSplit(num) {
+                return String(num).replace(
+                    /(?=\B(?:\d{3})+\b)(\d{3}(\.\d+$)?)/g,
+                    ',$1',
+                );
+            }
+            // 保留两位数字向下取整
+            function floor(num) {
+                return (Math.floor(num * 100) / 100).toFixed(2);
+            }
+
+            //
+            function symol(config) {
+                const {num = 0, symbol = 'Y'} = config
+                // 改变num
+                return config
+            }
+
+
+
+            // 处理数据 utils
+            function formatNumber(option = {}, funcArr) {
+                // 
+                const config = {...option}
+                const {num = 0, symbol = 'Y'} = config
+                const dealFunc = compose([...funcArr])
+
+                // const newNum = symbol + thousandSplit(floor(num))
+                const newNum = dealFunc(config)
+                return config
+            }
+
+             // 处理数据 utils2
+             function formatNumber2(option = {}) {
+                // 
+                const config = {...option}
+                const {num = 0, symbol = 'Y'} = config
+                const dealFunc2 = compose(symol, floor)
+
+                // const newNum = symbol + thousandSplit(floor(num))
+                const newNum = dealFunc(config)
+                return config.num
+            }
+
+            // 三种
+            function sanzhongfan (option = {}, [symol, thousandSplit, floor]) {
+                const config = formatNumber(option = {}, funcArr)
+                return config.num
+            }
+
+            // 两张
+            function sanzhongfan (option = {}, [symol, floor]) {
+                const config = formatNumber(option = {}, funcArr)
+                return config.num
+            }
+
+            formatNumber(123, $)
+
+            const conts = 125885.365;
+            console.log('compose', compose(floor, thousandSplit)(conts));
+
+            const fn = ()
+
+        </script>
+    </body>
+</html>

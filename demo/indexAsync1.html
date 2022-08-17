@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>组合函数</title>
+    </head>
+    <body>
+        <script>
+            function fn1(arg) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        arg += '_Promise_fn1';
+                        console.log('fn1');
+                        resolve(arg);
+                    }, 1000);
+                });
+            }
+            function fn2(arg) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        arg += '_Promise_fn2';
+                        console.log('fn2');
+                        resolve(arg);
+                    }, 1000);
+                });
+            }
+            function fn3(arg) {
+                arg += '_fn3';
+                return arg;
+            }
+            console.log('1_Promise_fn1_fn3_Promise_fn2');
+            fn1(1).then((res) => {
+                const str = fn3(res);
+                fn2(str).then((res) => {
+                    console.log(res);
+                });
+            });
+        </script>
+    </body>
+</html>

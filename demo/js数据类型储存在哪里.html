@@ -1,0 +1,31 @@
+<!--
+ * @Author: tengye
+ * @Date: 2022-02-12 15:10:38
+ * @LastEditors: tengye
+ * @LastEditTime: 2022-02-12 15:23:28
+ * @FilePath: /js数据类型储存在哪里.html
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js数据类型储存在哪里</title>
+</head>
+<body>
+  <script>
+  // node --v8-options | grep -B0 -A1 stack-size 查看栈内存大小
+  // 通过内存-》堆快照-》根据变量名查看饮用地址
+  // 备注：chrome无法查看实际地址，此处为抽象后的地址
+  const Demo1 = function () {
+    this.s1 = 'GYKJ'
+    this.s2 = 'GYKJ'
+  }
+  let a = new Demo1()
+  let b = new Demo1()
+
+  </script>
+</body>
+</html>

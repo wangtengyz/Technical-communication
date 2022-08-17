@@ -1,0 +1,71 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-10 11:25:20
+ * @LastEditTime: 2021-11-11 11:08:59
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /studentA/函数编程-函子/函子基本概念.html
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函子的基本概念</title>
+</head>
+<body>
+  <a href="./01.Maybe函子.html">01.Maybe函子</a>
+  <a href="./02.Either函子.html">02.Either函子</a>
+  <h1>
+    为什么要在周会上交流函子？
+  </h1>
+  <p>
+    通过之前的龚喜庆的技术分享学习我们已经学习了函数式编程的一些基础，但是我们还没有演示在函数式编程中如何把副作用控制在可控的范围内，以及如何进行异常处理、异步操作等。
+    就像学了ts基本语法，项目中不用ts，容易丢；
+  </p>
+  <p>
+    这次纠正下上次分享几个误解;
+  </p>
+  <h2>
+    什么是Functor？（functor 是实现了 map 函数并遵守一些特定规则的容器类型）
+  </h2>
+  <div>
+    <p>首先：是一个对象</p>
+    <p>容器：包含值和值的变形关系(这个变形关系就是函数)</p>
+    <p>函子：是一个特殊的容器，通过一个普通的对象实现，该对象具有map方法，map方法可以运行一个函数对值进行处理(变形关系)</p>
+  </div>
+  <div>
+    <p>把值装进一个容器，而且只能使用 map 来处理它，这么做的理由到底是什么呢？</p>
+    <p>如果我们换种方式来问，答案就很明显了：让容器自己去运用函数能给我们带来什么好处？</p>
+    <p>答案是抽象，对于函数运用的抽象。当 map 一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分强大的理念</p>
+  </div>
+
+  <script>
+  class Container {
+        // 此处我们使用static来创建一个静态方法
+        static of(value) {
+            return new Container(value)
+        }
+        
+        constructor(value) {
+            this._value = value
+        }
+        
+        map(fn) {
+            // 那此处我们也可以直接使用of
+            return Container.of(fn(this._value))
+        }
+    }
+    // 使用示例
+    const r = Container.of(5)
+                .map(v => v + 2)
+                .map(v => v * v)
+    console.log(r) // => Container { _value: 49 }
+    // 通过以上方式我们实现了更函数式编程的函子
+    // 上面我们得到了一个r函子对象，而不是一个值，那我们怎么拿出这个值呢？
+    // 其实我们永远不去拿出这个值，它是一直存储在函子对象中的
+  </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+.g-c-blue {
+    color: #1677FF;
+}
+.g-c-active {
+    color: #3D7FFF;
+}
+.g-c-warn {
+    color: #FC7223
+}
+
+.g-c-brown {
+    color: #4A3021;
+}
+
+.g-c-wheat{
+    color: #FFC98C;
+}
+.g-bg-wheat {
+    background-color: #FFC98C;
+}
+
+.g-c-111 {
+    color: #111111;
+}
+.g-box-shadow {
+    box-shadow: 0px 2px 14px 5px rgba(53,53,53,0.05);
+}
+
+.cropper-bg {
+	background-image: none !important;
+	background-color: black;
+}
+.cropper-line {
+    background-color: #fff !important;
+}
+
+.cropper-point {
+    background-color: #fff !important;
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 100%;
+    opacity: 1 !important;
+    &.point-se {
+        width: 24px !important;
+        height: 24px !important;
+        border-radius: 0;
+        bottom: -10px !important;
+        right: -10px !important;
+    }
+    &.point-e {
+        right: -6px !important;
+    }
+    &.point-n {
+        top: -6px !important;
+    }
+    &.point-s {
+        bottom: -6px !important;
+    }
+    &.point-w {
+       left: -6px !important;
+    }
+     &.point-ne {
+        right: -6px !important;
+        top: -6px !important;
+    }
+    &.point-nw {
+        top: -6px !important;
+        left: -6px !important;
+    }
+    &.point-se {
+        bottom: -6px !important;
+         right: -6px !important;
+    }
+    &.point-sw {
+        bottom: -6px !important;
+        left: -6px !important;
+    }
+}
+
+.cropper-view-box {
+    outline: 1px solid #fff !important;
+    outline-color: #fff !important;
+}
+.cropper-container{
+	img {
+		&.cropper-hide {
+			background-image: url('https://img.alicdn.com/imgextra/i1/826052692/O1CN01bwO5Ge1VkywXNNw3i_!!826052692.png');
+			background-repeat: repeat;
+		}
+	}
+}
+
+:root {
+    --van-tabs-height: 64px !important;
+    --van-tabs-line-height: 64px !important;
+}
+* {
+    touch-action: pan-y;
+}

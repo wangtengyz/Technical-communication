@@ -1,0 +1,74 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-10 17:03:33
+ * @LastEditTime: 2021-11-11 11:28:02
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /studentA/函数编程-函子/01.Maybe函子.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>03.IO函子</title>
+    </head>
+    <body>
+        <div>
+            <a href="./函子基本概念.html">主页</a>
+            <h1>03.IO函子</h1>
+            <p>IO函子中的_value是一个函数，这里是把函数作为值来处理</p>
+            <p>
+                IO函子可以把不纯的动作存储到_value中，延迟这个不纯的操作(惰性执行)，包装当前的操作
+            </p>
+            <p>把不纯的操作交给调用者来处理</p>
+            <p>
+              总结： 我们给map传入的可能是一个不纯的操作，但是经过处理之后，我们保证了IO是以一个纯的操作，不纯的操作我们延迟到了调用_value时，也就达到了副作用在可控范围内。
+            </p>
+        </div>
+        <script>
+            // 一般怎么做异步请求处理？
+
+            const fp = require('lodash/fp');
+
+            class IO {
+                // of函数传入的还是一个值
+                static of(value) {
+                    // 此时我们使用IO函子的构造函数
+                    return new IO(function () {
+                        // 此时我们通过函数将传递进来的值返回
+                        return value;
+                    });
+                }
+                // 此时构造函数里边传入的是一个函数
+                constructor(fn) {
+                    this._value = fn;
+                }
+
+                map(fn) {
+                    // 返回IO，但是此时我们使用的是IO的构造函数
+                    // 此时我们使用fp模块中的flowRight将IO函子中存储的value(函数)和map传入的fn进行组合
+                    return new IO(fp.flowRight(fn, this._value));
+                }
+            }
+
+            // 使用
+            // 当前我们使用的是node环境，我们将node中的对象传递进来
+            // 当调用IO的of函数时of函数会将我们传递进来值保存到一个函数中，在使用时再来获取process
+            // 然后使用map来获取属性
+            const io = IO.of(process).map((v) => v.execPath);
+            console.log(io); // => IO { _value: [Function] }
+            // 通过log我们可以看到我们得到了一个io函子，函子中保存的是一个函数
+            // value中的function是谁呢？我们来看一下合成过程
+            // 1. of方法返回的是io对象，这个io对象中的value存储了一个函数，这个函数返回当前传入的process
+            // 2. map方法返回了一个新的io函子，这个新的io函子中value保存的是经过组合的函数
+            // 3. map方法中组合了fn和this._value,fn是我们传入的v => v.execPath,this._value是我们使用of得到创建的IO对象中保存的函数(即返回value那个)
+            // 4. 那么我们log中得到的function就是分析3中那俩函数的组合
+
+            // 获取io对象中的函数
+            const ioFn = io._value;
+            console.log(ioFn()); // => /usr/local/Cellar/node/12.6.0/bin/node (node的执行路径)
+        </script>
+    </body>
+</html>

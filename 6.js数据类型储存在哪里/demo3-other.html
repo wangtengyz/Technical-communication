@@ -1,0 +1,52 @@
+<!--
+ * @Author: tengye
+ * @Date: 2022-02-12 15:33:08
+ * @LastEditors: tengye
+ * @LastEditTime: 2022-02-12 16:36:53
+ * @FilePath: /demo3-other.html
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>js数据类型储存在哪里-其他基础类型篇</title>
+    </head>
+    <body>
+      <script>
+        // 例1
+        const Demo1 = function () {
+          this.s1 = 'GYKJ';
+          this.oddBall1 = true; // @71
+          this.oddBall2 = false; // @73
+          this.oddBall3 = undefined; // @65
+          this.oddBall4 = null; // @69
+          this.oddBall5 = ""; // @75
+        }
+        let a = new Demo1()
+        let b = new Demo1()
+        a.s0 = 'GYKJCS'
+        a.s2 = 'GYKJ string' 
+        /**
+         * 可以看到浏览器基本类型，地址也是相同的。在赋值时，也是就地复用。
+         * 而且这些拓展自oddBall的基本类型，其地址是固定的，
+         * 也就是说，在V8跑起来的第一时间，不管我们有没有声明这些基本类型，他们都已经被创建完毕了。
+         * 而我们声明对象时，赋的是他们的引用。
+         * 这也可以解释为什么我们说基本类型是赋到栈中：在V8中，存放在 @75 的值，永远是空字符串，那么v8就可以等效把这些地址视为值本身。
+         * 也就是龙哥微信群里，说的那句话的由来：基础数据类型都存栈中，复杂类型都存堆中
+         */
+
+
+      /** 总结
+        * 字符串： 存在堆里，栈中为引用地址，如果存在相同字符串，则引用地址相同。
+        * 数字： 小整数存在栈中，其他类型存在堆中。
+        * 其他类型：引擎初始化时分配唯一地址，栈中的变量存的是唯一的引用。
+        * 
+        */
+    </script>
+    </body>
+</html>
+
+

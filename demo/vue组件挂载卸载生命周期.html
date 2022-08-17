@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+ 
+</head>
+<body>
+    <div id="app" style="border: 1px solid blueviolet;padding: 10px">
+        <div >
+            根组件
+            <button @click="handleClick">根组件销毁</button>
+        </div>
+        <a-component></a-component>
+        <b-component></b-component>
+    </div>
+    
+    <script>
+        Vue.component('a-component' , {
+            template : `
+                <div style="border:1px solid black;padding: 10px;margin: 10px">
+                    组件A
+                    <c-component/>
+                </div>
+            ` ,
+            data(){
+                return {
+                    name : 'a-component'
+                }
+            } ,
+            beforeCreate(){
+                console.log('A组件beforeCreate')
+            } ,
+            created(){
+                console.log('A组件created')
+            } ,
+            beforeMount(){
+                console.log('A组件beforeMount')
+            } ,
+            mounted(){
+                console.log('A组件被mounted')
+            } ,
+            beforeDestroy(){
+                console.log('A组件被beforeDestroy')
+            } ,
+            destroyed(){
+                console.log('A组件被destroyed')
+            }
+        });
+
+        Vue.component('c-component' , {
+            template : `
+                <div style="border:1px solid black">组件C</div>
+            ` ,
+            data(){
+                return {
+                    name : 'c-component'
+                }
+            } ,
+            beforeCreate(){
+                console.log('C组件beforeCreate')
+            } ,
+            created(){
+                console.log('C组件created')
+            } ,
+            beforeMount(){
+                console.log('C组件beforeMount')
+            } ,
+            mounted(){
+                console.log('C组件被mounted')
+            } ,
+            beforeDestroy(){
+                console.log('C组件被beforeDestroy')
+            } ,
+            destroyed(){
+                console.log('C组件被destroyed')
+            }
+        });
+
+        Vue.component('b-component' , {
+            template : `
+                <div style="border: 1px solid black;padding: 10px">组件B</div>
+            ` ,
+            data(){
+                return {
+                    name : 'b-component'
+                }
+            } ,
+            beforeCreate(){
+                console.log('B组件beforeCreate')
+            } ,
+            created(){
+                console.log('B组件created')
+            } ,
+            beforeMount(){
+                console.log('B组件beforeMount')
+            } ,
+            mounted(){
+                console.log('B组件被mounted')
+            } ,
+            beforeDestroy(){
+                console.log('B组件被beforeDestroy')
+            } ,
+            destroyed(){
+                console.log('B组件被destroyed')
+            }
+        });
+        
+        let vm = new Vue({
+            el : '#app' ,
+            computed : {} ,
+            methods : {
+                handleClick(){
+                    this.$destroy();
+                }
+            } ,
+            beforeCreate(){
+                console.log('根组件beforeCreate')
+            } ,
+            created(){
+                console.log('根组件created')
+            } ,
+            beforeMount(){
+                console.log('根组件beforeMount')
+            } ,
+            mounted(){
+                console.log('根组件被mounted')
+            } ,
+            beforeDestroy(){
+                console.log('根组件被beforeDestroy')
+            } ,
+            destroyed(){
+                console.log('根组件被destroyed')
+            }
+        })
+    
+    
+    </script>
+
+</body>

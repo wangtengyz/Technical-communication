@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+  <link rel="icon" href="/favicon.ico" />
+  <title>简单h5画布工具</title>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover" />
+  <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_2946885_vbvnpzixsb.css">
+
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/fastclick/1.0.6/fastclick.min.js" type="module"></script>
+  <script>
+    if ('addEventListener' in document) {
+      document.addEventListener('DOMContentLoaded', function () {
+        FastClick.attach(document.body);
+      }, false);
+      document.body.addEventListener('touchmove', function (e) {
+        let className = e.target.className;
+        if (className.indexOf('scrollImg') == -1) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, { passive: false });
+    }
+    if (!window.Promise) {
+      document.writeln('<script src="https://cdn.bootcdn.net/ajax/libs/es6-promise/4.2.8/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
+    }
+  </script>
+  <script src="https://appx/web-view.min.js"></script>
+  <script type="module" src="/src/main.js"></script>
+  <script src="/vconsole.min.js"></script>
+</body>
+
+</html>

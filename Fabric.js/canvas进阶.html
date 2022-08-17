@@ -1,0 +1,217 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-08-11 13:35:49
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-08-16 16:10:44
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas进阶</title>
+</head>
+
+<body>
+  <!-- 1、创建 绘制时钟canvas 元素 -->
+  <!-- <canvas id="c" width="600" height="600" style="border: 1px solid #ccc;"></canvas> -->
+
+  <!-- demo1绘制时钟 -->
+  <!-- <script>
+    // 2、获取 canvas 对象
+    const cnv = document.getElementById('c');
+    // 3、获取 canvas 上下文环境对象
+    const ctx = cnv.getContext('2d');
+
+
+    function run () {
+      ctx.save()
+      ctx.clearRect(0, 0, 600, 600)
+
+      // 设置中心点，此时300，300变成了坐标的0，0
+      ctx.translate(300, 300)
+      ctx.save()
+
+      // 画圆线使用arc(中心点X,中心点Y,半径,起始角度,结束角度)
+      // 画大圆
+      ctx.beginPath()
+      ctx.arc(0, 0, 100, 0, 2 * Math.PI)
+      ctx.stroke() // 执行画线段的操作
+      ctx.closePath()
+
+      // 画小圈
+      ctx.beginPath()
+      ctx.arc(0, 0, 5, 0, 2 * Math.PI)
+      // 执行画线段的操作stroke
+      ctx.stroke()
+      ctx.closePath()
+
+
+      // 获取当前 时，分，秒
+      let time = new Date()
+      let hour = time.getHours() % 12
+      let min = time.getMinutes()
+      let sec = time.getSeconds()
+
+      // 时针
+      ctx.rotate(2 * Math.PI / 12 * hour + 2 * Math.PI / 12 * (min / 60) - Math.PI / 2)
+      ctx.beginPath()
+      // moveTo设置画线起点
+      ctx.moveTo(-10, 0)
+      // lineTo设置画线经过点
+      ctx.lineTo(40, 0)
+      // 设置线宽
+      ctx.lineWidth = 8
+      ctx.lineCap = 'round'
+      ctx.stroke()
+      ctx.closePath()
+      ctx.restore()
+      ctx.save()
+
+      // 分针
+      ctx.rotate(2 * Math.PI / 60 * min + 2 * Math.PI / 60 * (sec / 60) - Math.PI / 2)
+      ctx.beginPath()
+      ctx.moveTo(-10, 0)
+      ctx.lineTo(60, 0)
+      ctx.lineWidth = 4
+      ctx.strokeStyle = 'blue'
+      ctx.lineCap = 'round'
+      ctx.stroke()
+      ctx.closePath()
+      ctx.restore()
+      ctx.save()
+
+      //秒针
+      ctx.rotate(2 * Math.PI / 60 * sec - Math.PI / 2)
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(80, 0)
+      ctx.strokeStyle = 'red'
+      ctx.lineCap = 'round'
+      ctx.lineWidth = 2
+      ctx.stroke()
+      ctx.closePath()
+      ctx.restore()
+      ctx.save()
+
+
+      // 绘制刻度，也是跟绘制时分秒针一样，只不过刻度是死的
+      ctx.lineWidth = 1
+      for (let i = 0; i < 60; i++) {
+        ctx.rotate(2 * Math.PI / 60)
+        ctx.beginPath()
+        ctx.moveTo(90, 0)
+        ctx.lineTo(100, 0)
+        // ctx.strokeStyle = 'red'
+        ctx.stroke()
+        ctx.closePath()
+      }
+
+      ctx.restore()
+      ctx.save()
+
+      ctx.lineWidth = 5
+      for (let i = 0; i < 12; i++) {
+        ctx.rotate(2 * Math.PI / 12)
+        ctx.beginPath()
+        ctx.moveTo(85, 0)
+        ctx.lineTo(100, 0)
+        // ctx.strokeStyle = 'red'
+        ctx.stroke()
+        ctx.closePath()
+      }
+      ctx.restore()
+      ctx.restore()
+
+    }
+    run()
+    setInterval(() => {
+      run()
+    }, 1000);
+  </script> -->
+
+  <!-- demo2 刮刮卡绘制 -->
+
+  <!-- 2、canvas实现刮刮卡-->
+  <div class="box" id="box">
+    <canvas id="canvas" width="400" height="100"></canvas>
+    <div class="text">恭喜您获得100w</div>
+  </div>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      text-align: center;
+    }
+
+    .box {
+      position: relative;
+      display: inline-block;
+      width: 400px;
+      height: 100px;
+      /* margin-top: 20px; */
+    }
+
+    .text {
+      position: absolute;
+      /* left: 130px; */
+      text-align: center;
+      top: 35px;
+      width: 400px;
+      z-index: -1;
+    }
+  </style>
+
+  <script>
+    const canvas = document.getElementById('canvas')
+    const box = document.getElementById('box')
+    const ctx = canvas.getContext('2d')
+
+    // 填充的颜色
+    ctx.fillStyle = 'darkgray';
+    // 填充矩形 fillRect(起始X,起始Y,终点X,终点Y)
+    ctx.fillRect(0, 0, 400, 100);
+    ctx.font = '30px 宋体'
+    ctx.fillStyle = '#fff';
+    // 绘制填充文字
+    ctx.fillText('刮刮卡', 150, 50)
+
+    let isDraw = false
+    canvas.onmousedown = function () {
+      console.log('onmousedown');
+      isDraw = true
+    }
+    canvas.onmousemove = function (e) {
+      if (!isDraw) return
+      ctx.beginPath()
+      // 计算鼠标在canvas里的位置
+      // const x = e.pageX - box.offsetLeft
+      // const y = e.pageY - box.offsetTop
+      const x = e.offsetX;
+      const y = e.offsetY;
+      // 设置globalCompositeOperation
+      ctx.globalCompositeOperation = 'destination-out'
+      // 画圆
+      ctx.arc(x, y, 10, 0, 2 * Math.PI)
+      // 填充圆形
+      ctx.fill()
+      ctx.closePath()
+    }
+    canvas.onmouseup = function () {
+      isDraw = false
+    }
+
+
+  </script>
+
+
+</body>
+
+</html>

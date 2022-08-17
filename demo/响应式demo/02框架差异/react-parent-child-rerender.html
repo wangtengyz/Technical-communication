@@ -1,0 +1,58 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-06-09 17:42:13
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-06-09 17:48:06
+-->
+<title>React App</title>
+
+<body>
+  <h1>React App</h1>
+  <hr />
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    class Father extends React.Component {
+      state = {
+        fatherState: "Father-original state"
+      };
+      changeState = () => {
+        console.log("-----change Father state-----");
+        this.setState({ fatherState: "Father-new state" });
+      };
+      render () {
+        console.log("Father:render");
+        return (
+          <div>
+            <h2>{this.state.fatherState}</h2>
+            <button onClick={this.changeState}>change Father state</button>
+            <hr />
+            <Child />
+          </div>
+        );
+      }
+    }
+    class Child extends React.Component {
+      state = {
+        childState: "Child-original state"
+      };
+      changeState = () => {
+        console.log("-----change Child state-----");
+        this.setState({ childState: "Child-new state" });
+      };
+      render () {
+        console.log("child:render");
+        return (
+          <div>
+            <h3>{this.state.childState}</h3>
+            <button onClick={this.changeState}>change Child state</button>
+          </div>
+        );
+      }
+    }
+    ReactDOM.render(<Father />, document.getElementById("root"));
+  </script>
+</body>

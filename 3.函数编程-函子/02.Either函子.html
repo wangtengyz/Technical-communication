@@ -1,0 +1,121 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-10 17:03:33
+ * @LastEditTime: 2021-11-11 20:03:05
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /studentA/函数编程-函子/01.Maybe函子.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>02.Either函子</title>
+    </head>
+    <body>
+        <div>
+            <a href="./函子基本概念.html">主页</a>
+            <h1>02.Either函子</h1>
+            <p>
+                在Maybe函子中我们学习了如何处理函子内部值是空值的情况，此时我们可以控制传入值的异常
+            </p>
+            <p>
+                那如果我们在调用传入处理函数fn时返回空值时也会出现异常，那我们应该如何处理呢。
+            </p>
+            <p>Either：两者中的任何一个，类似if...else...的处理</p>
+            <p>异常会让函数变得不纯，Either函子可以用来处理异常</p>
+        </div>
+        <script>
+          // 提问比如JSON.parse方法,怎么 一般怎么做异常处理？
+
+
+
+
+
+
+
+          
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Either函子：二选一
+            // 因为是二选一，我们来定义两个函子
+            class Left {
+                static of(value) {
+                    return new Left(value);
+                }
+
+                constructor(value) {
+                    this._value = value;
+                }
+
+                map(fn) {
+                    // 此处有所不同
+                    // 直接返回当前对象
+                    return this;
+                }
+            }
+
+            class Right {
+                static of(value) {
+                    return new Right(value);
+                }
+
+                constructor(value) {
+                    this._value = value;
+                }
+
+                map(fn) {
+                    return Right.of(fn(this._value));
+                }
+            }
+
+            //创建两个函子看一下不同之处
+            const l = Left.of(12).map((v) => v + 2);
+            const r = Right.of(12).map((v) => v + 2);
+            console.log(l); // => Left { _value: 12 }
+            console.log(r); // => Right { _value: 14 }
+
+            // 分析：两处结果不同的原因
+            // Right函子中map我们是做了正常函子做的事情，得到的结果是预期的
+            // Left函子中map我们是直接将当前对象返回，并没有做任何处理，其内部值不会改变
+
+            // Left函子有什么作用？
+            // 对于纯函数来说，相同的输入要有相同的输出，当发生异常时函子也应该给出相同的输出
+            // 因此我们可以使用Left函子来处理异常
+
+            // 使用示例：将字符串转成json，在转换时可能发生异常
+            function parseJSON(str) {
+                try {
+                    // 当没有异常时正常处理
+                    return Right.of(JSON.parse(str));
+                } catch (e) {
+                    // 当出现异常时，我们使用Left函子来保存异常
+                    return Left.of({ error: e.message });
+                }
+            }
+            // 使用
+            // 出现异常的
+            const errorP = parseJSON('{ name: rh }');
+            console.log(errorP); // => Left { _value: { error: 'Unexpected token n in JSON at position 2' } }
+            const p = parseJSON('{ "name": "rh" }');
+            console.log(p); // => Right { _value: { name: 'rh' } }
+            // 通过输出我们可以看到当出现异常时我们能通过Left函子来处理并存储异常
+            // 当没有异常时Right函子可以正常执行
+        </script>
+    </body>
+</html>

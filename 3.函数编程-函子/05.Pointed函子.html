@@ -1,0 +1,39 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-10 17:03:33
+ * @LastEditTime: 2021-11-11 20:10:47
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /studentA/函数编程-函子/01.Maybe函子.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>05.Pointed函子</title>
+    </head>
+    <body>
+        <div>
+            <a href="./函子基本概念.html">主页</a>
+            <h1>05.Pointed函子</h1>
+            <p>Pointed函子是实现了of静态方法的函子</p>
+            <p>
+                of方法是为了避免使用new来创建对象，更深层次的含义是of方法用来把值放到上下文Context中(把值放到容器中(函子),使用map来处理),如下图：
+            </p>
+        </div>
+        <script>
+            // Pointed函子我们是第一次提到，但是我们之前在使用函子时一直在使用它？
+
+            class Container {
+                // 具有of方法的函子就是Pointed函子
+                static of(value) {
+                    return new Container(value);
+                }
+
+                // 其余省略
+            }
+        </script>
+    </body>
+</html>

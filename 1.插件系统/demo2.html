@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>最简单的插件系统</title>
+        <script>
+            // 计算器
+            const betaCalc = {
+                currentValue: 0,
+
+                setValue(value) {
+                    this.currentValue = value;
+                    console.log(this.currentValue);
+                },
+
+                core: {
+                    plus: (currentVal, addend) => currentVal + addend,
+                    minus: (currentVal, subtrahend) => currentVal - subtrahend,
+                },
+
+                plugins: {
+                  squared: (currentVal, newVal) => newVal + newVal,
+                },
+
+                press(buttonName, newVal) {
+                    const func =
+                        this.core[buttonName] || this.plugins[buttonName];
+                    this.setValue(func(this.currentValue, newVal));
+                },
+
+                register(plugin) {
+                    const { name, exec } = plugin;
+                    this.plugins[name] = exec;
+                },
+            };
+            // 我们得插件，平方插件
+            const squaredPlugin = {
+                name: 'squared',
+                exec: function (currentValue, newVal) {
+                    return newVal * newVal;
+                },
+            };
+
+            betaCalc.register(squaredPlugin);
+
+            // 数字
+            const getNum = () =>
+                document.getElementById('number').value * 1 || 0;
+            // 加法计算
+            function plusCalculate() {
+                betaCalc.press('plus', getNum());
+                document.getElementById('result').innerHTML =
+                    betaCalc.currentValue;
+            }
+            // 减法计算
+            function minusCalculate() {
+                betaCalc.press('minus', getNum());
+                document.getElementById('result').innerHTML =
+                    betaCalc.currentValue;
+            }
+            // 平方计算
+            function minusSquared() {
+                betaCalc.press('squared', getNum());
+                document.getElementById('result').innerHTML =
+                    betaCalc.currentValue;
+            }
+
+            // 本质上，这个新的 press 方法将我们所有的计算器按钮转换为纯函数。他们获取一个值，执行一个操作，然后返回结果。这有很多好处：
+
+            // 它简化了API。
+            // 它使测试更加容易（对于BetaCalc和插件本身）。
+            // 它减少了我们系统的依赖性，使其更松散地耦合在一起。
+        </script>
+    </head>
+    <body>
+        <input type="text" id="number" placeholder="默认0" />
+        <button onclick="plusCalculate()">加</button>
+        <button onclick="minusCalculate()">减</button>
+        <button onclick="minusSquared()">求平方</button>
+        <div>结果为</div>
+        <div id="result">0</div>
+    </body>
+    <script>
+        // 本质上，这个新的 press 方法将我们所有的计算器按钮转换为纯函数。他们获取一个值，执行一个操作，然后返回结果。这有很多好处：
+
+        // 它简化了API。
+        // 它使测试更加容易（对于BetaCalc和插件本身）。
+        // 它减少了我们系统的依赖性，使其更松散地耦合在一起。
+    </script>
+</html>

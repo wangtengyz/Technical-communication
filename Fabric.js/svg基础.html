@@ -1,0 +1,210 @@
+<!--
+ * @Descripttion: 
+ * @Author: voanit
+ * @Date: 2022-08-11 13:34:58
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-08-11 15:18:57
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  svg {
+    border: 1px solid blue;
+  }
+
+  body {
+    text-align: center;
+  }
+
+  svg {
+    background: #333;
+  }
+
+  @keyframes ani-1 {
+    0% {
+      transform: scale(0);
+    }
+
+    25% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: rotate(120deg);
+    }
+
+    75%,
+    100% {
+      transform: rotate(120deg) translate(13em) scale(.2);
+    }
+  }
+
+  @keyframes ani-2 {
+    0% {
+      transform: scale(0);
+    }
+
+    25% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: rotate(240deg);
+    }
+
+    75%,
+    100% {
+      transform: rotate(240deg) translate(13em) scale(.2);
+    }
+  }
+
+  @keyframes ani-3 {
+    0% {
+      transform: scale(0);
+    }
+
+    25% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: rotate(360deg);
+    }
+
+    75%,
+    100% {
+      transform: rotate(360deg) translate(13em) scale(.2);
+    }
+  }
+
+  use:nth-of-type(1) {
+    fill: hsl(120, 100%, 80%);
+    animation: ani-1 4s linear infinite;
+  }
+
+  use:nth-of-type(2) {
+    fill: hsl(240, 100%, 80%);
+    animation: ani-2 4s linear infinite;
+  }
+
+  use:nth-of-type(3) {
+    fill: hsl(360, 100%, 80%);
+    animation: ani-3 4s linear infinite;
+  }
+</style>
+
+<body>
+  <div class="div">svg</div>
+  <svg width="200" height="200" style="border: 1px solid red">
+    <!-- 矩形 -->
+    <!-- <rect x="30" y="20" width="200" height="100" rx="100" ry="50"></rect> -->
+    <!-- 圆形 -->
+    <!-- <circle cx="60" cy="80" r="50"></circle> -->
+    <!-- 椭圆 -->
+    <!-- <ellipse cx="100" cy="40" rx="80" ry="30"></ellipse> -->
+    <!-- 直线 -->
+    <!-- <line x1="30" y1="40" x2="200" y2="180" stroke="blue"></line> -->
+    <!-- 需要注意的是，<line> 需要使用设置 stroke 属性才会有绘制效果。 -->
+    <!-- 折线 -->
+    <!-- <polyline points="10 10, 200 80, 230 230" stroke="#000" fill="none"></polyline> -->
+    <!-- 多边形 -->
+    <!-- <polygon points="10 10, 200 80, 230 230"></polygon> -->
+    <!-- 直线路径 path -->
+    <!-- <path d="M 50 50 V 100 100 H 100 Z" stroke="blue" fill="none"></path> -->
+    <!-- 曲线 -->
+    <!-- 红 -->
+    <!-- <path d="M 125 75 A 100 50 0 0 0 225 125" stroke="red" fill="none" /> -->
+
+    <!-- 黄 -->
+    <!-- <path d="M 125 75 A 100 50 0 0 1 225 125" stroke="yellow" fill="none" /> -->
+
+    <!-- 蓝 -->
+    <!-- <path d="M 125 75 A 100 50 0 1 0 225 125" stroke="blue" fill="none" /> -->
+
+    <!-- 绿 -->
+    <!-- <path d="M 125 75 A 100 50 0 1 1 225 125" stroke="green" fill="none" /> -->
+    <text y="16">雷猴啊</text>
+    <a xlink:href="https://juejin.cn/post/7116784455561248775" xlink:title="canvas" target="_blank">
+      <text x="50" y="50" fill="pink">也学学Canvas吧</text>
+    </a>
+    <!-- <image x="-300" y="-300" xlink:href="../img/man.webp"></image> -->
+  </svg>
+  <div>
+    <h4>图标绘制绘制一个播放图标</h4>
+    <svg width="100" height="100">
+      <circle cx="50" cy="50" r="50" fill="lightblue" />
+      <line x1="35" y1="30" x2="35" y2="70" stroke-width="5" stroke="white"></line>
+      <line x1="65" y1="30" x2="65" y2="70" stroke-width="5" stroke="white"></line>
+    </svg>
+  </div>
+  <div>
+    <h4>viewBox 规定了新的可见区域规则</h4>
+    <svg height="120" width="120" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="50" fill="lightblue" />
+    </svg>
+    <svg height="80" width="80" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="50" fill="lightblue" />
+    </svg>
+    <svg height="50" width="50" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="50" fill="lightblue" />
+    </svg>
+  </div>
+  <div>
+    <h4>svg组件封装及分组端概念</h4>
+    <svg>
+      <g id="play">
+        <circle cx="50" cy="50" r="50" fill="currentColor" />
+        <line x1="35" y1="30" x2="35" y2="70" stroke-width="5" stroke="white"></line>
+        <line x1="65" y1="30" x2="65" y2="70" stroke-width="5" stroke="white"></line>
+      </g>
+    </svg>
+    <svg style="color: rgb(210, 105, 30);">
+      <use href="#play"></use>
+    </svg>
+    <svg style="color: rgb(210, 30, 114);">
+      <use href="#play"></use>
+    </svg>
+    <svg style="color: rgb(30, 210, 84);">
+      <use href="#play"></use>
+    </svg>
+  </div>
+  <div>
+    <h4>symbol使分组图标自适应容器大小，</h4>
+    <svg width="0" height="0">
+      <symbol id="play1" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="50" fill="currentColor" />
+        <line x1="35" y1="30" x2="35" y2="70" stroke-width="5" stroke="white"></line>
+        <line x1="65" y1="30" x2="65" y2="70" stroke-width="5" stroke="white"></line>
+      </symbol>
+    </svg>
+    <svg height="50" width="50" style="color: rgb(210, 105, 30);">
+      <use href="#play1"></use>
+    </svg>
+    <svg height="100" width="100" style="color: rgb(210, 30, 114);">
+      <use href="#play1"></use>
+    </svg>
+    <svg height="200" width="200" style="color: rgb(30, 210, 84);">
+      <use href="#play1"></use>
+    </svg>
+  </div>
+  <div>
+    <h4>这个demo就将通过设置svg标签的viewBox属性，将SVG画布的原点移到可见区域的中心，里面所有的SVG元素都将绕中心作变换</h4>
+    <svg viewBox='-512 -512 1024 1024' height="300" width="300">
+      <defs>
+        <polygon id='star' points='250,0 64,64 0,250 -64,64 -250,0 -64,-64 0,-250 64,-64' />
+      </defs>
+      <use href='#star' />
+      <use href='#star' />
+      <use href='#star' />
+    </svg>
+  </div>
+</body>
+
+</html>
