@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+    }
+
+    #team {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    #h1 {
+      text-align: center;
+    }
+
+    #content {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 10px;
+      box-sizing: border-box;
+      align-items: center;
+    }
+
+    .name-box {
+      position: relative;
+      width: 10%;
+      margin-top: 5%;
+      text-align: center;
+      line-height: 45px;
+      font-size: 30rpx;
+      font-weight: bold;
+      background-color: #acd0e4;
+      margin: 2%;
+      box-sizing: border-box;
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px #888;
+    }
+
+    .sort {
+      width: 150px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      background-color: #4b5692;
+      margin: auto;
+      margin-top: 15px;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px #888;
+      text-align: center;
+    }
+
+    .pink {
+      background-color: pink;
+    }
+
+    #sort-one {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .left-box,
+    .right-box {
+      width: 100px;
+      height: 50px;
+      background-color: #0a83f4;
+      margin-bottom: 10px;
+      line-height: 50px;
+    }
+
+    #target {
+      height: 100px;
+      /* width: 200px; */
+      background-color: #f8f8f8;
+      margin: 10px auto;
+      overflow: hidden;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px #888;
+      text-align: center;
+    }
+
+    /* .hover::before {
+      content: '请将excel文件拖到这里';
+      width: 100%;
+      height: 100%;
+      display: block;
+      text-align: center;
+      line-height: 400px;
+      font-size: 24px;
+      font-family: '微软雅黑';
+    } */
+  </style>
+</head>
+
+<body>
+  <div id="target" class="hover">+请将excel文件拖到这里</div>
+  <div class="container">
+    <h2 id="h1">第一届乒乓球杯比赛分组</h2>
+    <div id="content"></div>
+    <div class="sort" id="sort">分组开始</div>
+    <div id="team">
+      <!-- <h3>一队:队长肖1</h3>
+      <h3>二队:队长郑1</h3>
+      <h3>三队:队长曾1</h3>
+      <h3>四队:队长姚1</h3> -->
+    </div>
+    <div class="sort-content">
+      <div id="sort-one"></div>
+    </div>
+  </div>
+  <script id="data-content" type="text/html">
+    {{each data item index}}
+    <div class="name-box">{{index + 1}}.{{item.name}}</div>
+    {{/each}}
+  </script>
+  <script id="one-content" type="text/html">
+    {{each data item index}}
+    <div class="name-box pink">
+    <div class="text">第{{index + 1}}组</div>
+      <div class="box-content">
+        {{each item people}}
+        <div class="people-box">{{people.name}}</div>
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+  </script>
+
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  <!-- <script type="text/javascript" src="./template.js"></script> -->
+  <script type="text/javascript" src="https://unpkg.com/art-template@4.13.2/lib/template-web.js"></script>
+  <script src="./xlsx.full.min.js"></script>
+  <script>
+    const woman = []
+    const GROUP_NUM = 2; // 人一组
+    let listall = [
+    ]
+
+    // excel文件数据导入注入页面
+    function handleDrop(f) {
+      var reader = new FileReader(),
+        name = f.name;
+      reader.onload = function (e) {
+        var data = e.target.result,
+          workbook = XLSX.read(data, { type: 'binary' }),
+          sheetName = workbook.SheetNames[0],
+          sheet = workbook.Sheets[sheetName];
+        const snArr = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]); // 生成json表格内容
+        listall = snArr.map(item => ({ name: item.姓名 }))
+        var html = template('data-content', {
+          data: listall
+        });
+        document.getElementById('content').innerHTML = html;
+
+        target.style = 'display:none';
+      };
+      reader.readAsBinaryString(f);
+    }
+
+    // 点击分组
+    var sort = document.getElementById('sort')
+    sort.addEventListener('click', function () {
+      const group = Math.ceil(listall.length / GROUP_NUM);
+      var morelist = changelist(listall, group);
+      var html1 = template('one-content', {
+        data: morelist
+      });
+      document.getElementById('sort-one').innerHTML = html1;
+    })
+    /*
+     *
+     * 解决数组中对象随机分组问题
+     * list:要分组的数组
+     * num:分成的组数
+     * */
+    function changelist(arr, num) {
+      const list = [...arr]
+      var n = list.length - 1; //获取数组下标的上限
+      var length = n / num; //获取分组后单组的长度
+      var list1 = list,
+        list2 = [];
+      console.log(n, length)
+      for (var i = 0; i < num; i++) { //根据分组数，确定遍历次数
+        var newlist = [];
+        for (var j = 0; j < length; j++) {
+          var id = Math.ceil(Math.random(0, list1.length - 1) * list1.length - 1); //获取下标范围内的随机数
+          list1[id] && newlist.push(list1[id]); //将获取的对象放入定义的变量数组中
+          list1.splice(id, 1); //从数组中清除当前项
+        }
+        list2.push(newlist); //将变量数组放入结果组数中
+        console.log(list2)
+      }
+      return list2;
+    }
+
+    // 拖拽事件
+    window.addEventListener('load', function () {
+      var target = document.querySelector('#target');
+      target.addEventListener('dragenter', function () {
+        this.classList.remove('hover');
+      });
+      target.addEventListener('dragleave', function () {
+        this.classList.add('hover');
+      });
+      target.addEventListener('dragover', function (e) {
+        this.classList.remove('hover');
+        e.preventDefault();
+      });
+      target.addEventListener('drop', function (e) {
+        e.preventDefault();
+        handleDrop(e.dataTransfer.files[0]);
+      });
+    });
+  </script>
+
+
+
+</body>
+
+</html>
